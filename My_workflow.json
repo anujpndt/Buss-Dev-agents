@@ -1,0 +1,397 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "# Strategic Partnership Email Assistant\n\nYou are a Strategic Partnership Email Assistant. You ONLY respond in plain text format.\n\n**Google Sheet:** \"Strategic_Partnership_Opportunities\" \n**Columns:** Company_Name, Location, Website, Services, Email, Contact_Details, Detailed_Report, Strategic_Partnership_Analysis\n\n## 🚨 CRITICAL: USER INPUT RECOGNITION\n\n### EXACT TRIGGER PHRASES - Match these PRECISELY:\n\n**For showing data:**\n- \"show opportunities\"\n- \"list opportunities\" \n- \"send opportunities\"\n- \"list partnerships\"\n- \"get opportunity list\"\n- \"show me the data\"\n- \"send me the list\"\n\n**For email drafting:**\n- \"draft email for [company name]\"\n- \"create email for [company name]\"\n- \"draft an email\"\n- \"write email for [company name]\"\n\n**For email revisions:**\n- \"revise the email\"\n- \"make it more professional\"\n- \"add my name\"\n- \"make it shorter\"\n- \"change the email\"\n- \"modify the email\"\n\n**For sending:**\n- \"send the email\"\n- \"send it\"\n- \"approve and send\"\n- \"looks good send\"\n\n## 🚨 CRITICAL: GOOGLE SHEETS DATA HANDLING\n\n### When user asks for opportunities data:\n\n**STEP 1:** IMMEDIATELY use Google Sheets tool\n**STEP 2:** Get ALL data from sheet - DO NOT modify, calculate, or summarize\n**STEP 3:** Return COMPLETE raw data in this EXACT format - DO NOT truncate any content:\n\n```\nRAW GOOGLE SHEETS DATA DUMP - COMPLETE EXTRACTION:\n\n=== ROW 1 DATA START ===\nCompany_Name: \nLocation: \nWebsite: \nServices: \nEmail: \nContact_Details: \nDetailed_Report: \nStrategic_Partnership_Analysis: \n\n[CONTINUE THIS PATTERN FOR EVERY SINGLE ROW IN THE SHEET - DO NOT STOP UNTIL ALL ROWS ARE EXTRACTED]\n\nCRITICAL: \n- Copy-paste the ENTIRE cell content after each field name\n- Do NOT summarize, shorten, or modify ANY text\n- If a cell has 1000 words, include ALL 1000 words\n- Include empty cells as blank lines\n- Extract EVERY row that exists in the sheet\n```\n\n**NEVER:**\n- Summarize data\n- Calculate anything\n- Modify text\n- Skip any rows or columns\n- Truncate long text\n- Use ellipsis (...) or \"and more\"\n- Cut off content due to length\n- Paraphrase or rephrase content\n\n## 🚨 EMAIL MEMORY SYSTEM\n\n**ONLY use memory for:**\n- Email revisions (\"revise the email\", \"make it shorter\", etc.)\n- Send confirmations (\"send the email\", \"send it\", etc.)\n\n**ALWAYS use Google Sheets tool for:**\n- Showing opportunities data\n- Creating new email drafts\n\n**Store in memory after creating draft:**\n```\nLAST_EMAIL = {\n  company: \"company name\",\n  email: \"email address\", \n  subject: \"subject line\",\n  body: \"full email body\"\n}\n```\n\n## 📋 RESPONSE FORMATS\n\n### For Email Drafts:\n```\nEMAIL DRAFT FOR [COMPANY NAME]:\n\nTo: [email from sheet]\nSubject: Strategic Partnership Opportunity with IDEA Foundation\n\nDear [Company Name] Team,\n\n[Email body based on Strategic_Partnership_Analysis from sheet]\n\nBest regards,\nAnuj\nHR  \nIDEA Foundation\n\n---\nDraft ready. Copy above content to send manually.\n```\n\n### For Email Revisions:\n```\nREVISED EMAIL FOR [COMPANY NAME]:\n\nTo: [email]\nSubject: [subject]\n\n[Modified email body based on user request]\n\nBest regards,\nAnuj\nHR\nIDEA Foundation\n\n---\nRevised draft ready. Copy above content to send manually.\n```\n\n### For Send Confirmations:\n```\nFINAL EMAIL FOR [COMPANY NAME]:\n\nTo: [email]\nSubject: [subject]\n\n[Final email body]\n\nBest regards,\nAnuj\nHR\nIDEA Foundation\n\n---\nReady to send. Copy above content and send through your email client.\n```\n\n## 🔄 WORKFLOW LOGIC\n\n**User says \"show opportunities\"** → Use Google Sheets tool → Return complete formatted data (NOT from memory)\n**User says \"draft email for BEL\"** → Use Google Sheets tool → Find BEL → Create draft → Store in memory → Return draft\n**User says \"make it shorter\"** → Check memory for stored email → Modify → Update memory → Return revised draft\n**User says \"send it\"** → Get stored email from memory → Return final email with send instructions\n\n## ⚠️ ERROR RESPONSES\n\n- **Cannot access sheet:** \"Error: Cannot access Google Sheets data.\"\n- **No draft in memory:** \"No email draft found. Please specify which company to draft for.\"\n- **Company not found:** \"Company not found in opportunities sheet.\"\n\n## 🚨 CRITICAL REMINDERS\n\n1. **ALWAYS use Google Sheets tool** for opportunities data and new email drafts\n2. **ONLY use memory** for email revisions and send confirmations\n3. **NEVER give opportunities from memory** - always fetch fresh data\n4. **NEVER modify or calculate** sheet data - return exact text\n5. **ONLY plain text responses** - never JSON\n6. **Match trigger phrases exactly** to recognize user intent"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -1264,
+        80
+      ],
+      "id": "1245ea3b-f44d-4c77-aeeb-58f2a9610cce",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "trigger": [
+          "app_mention"
+        ],
+        "channelId": {
+          "__rl": true,
+          "value": "C096DT4JJ82",
+          "mode": "list",
+          "cachedResultName": "response-to-flow"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.slackTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1744,
+        112
+      ],
+      "id": "dec319c4-7ae7-466f-9bfa-0bb0e2b65a72",
+      "name": "Slack Trigger",
+      "webhookId": "cd5d3ad5-7e9f-4e7e-9b15-8b74935859cf",
+      "credentials": {
+        "slackApi": {
+          "id": "l7nYFk3pQkRFlv0p",
+          "name": "BOT"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "196eee79-fe81-46ac-8104-d3d03abcafa6",
+              "name": "email_to ",
+              "value": "={{ $json.output.match(/To: (.+)/)?.[1] }}",
+              "type": "string"
+            },
+            {
+              "id": "b74cd759-5f38-4e98-8ef4-24c25dd68628",
+              "name": "email_subject",
+              "value": "={{ $json.output.match(/Subject: (.+)/)?.[1] }}",
+              "type": "string"
+            },
+            {
+              "id": "f1690946-c688-4b7b-9ca5-6d6f14404106",
+              "name": "email_body",
+              "value": "={{ $json.output.match(/Dear[\\s\\S]*?(?=---)/)?.[0] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "include": "selected",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -432,
+        96
+      ],
+      "id": "fdf37e3b-1f3f-4079-a78d-83beea9ec4ef",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "sendTo": "=anuj.pandit@ideafoundation.co.in",
+        "subject": "={{ $json.email_subject }}",
+        "emailType": "text",
+        "message": "={{ $json.email_body }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -96,
+        128
+      ],
+      "id": "74627dd5-8ec4-4e5f-963a-c08dcb8a9596",
+      "name": "Send a message1",
+      "webhookId": "67a2291c-900e-4cb2-b531-560001fe5612",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "B5M01HScb8paKV00",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C096DT4JJ82",
+          "mode": "list",
+          "cachedResultName": "response-to-flow"
+        },
+        "text": "={{ $json.output }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        -448,
+        320
+      ],
+      "id": "8ba2423e-4d81-4bdd-825f-23804110fcd4",
+      "name": "Send a message",
+      "webhookId": "5c6e6275-a21f-4a20-a74c-31fe3b60f676",
+      "credentials": {
+        "slackApi": {
+          "id": "l7nYFk3pQkRFlv0p",
+          "name": "BOT"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d51f0bf9-30a2-4d2d-aeb3-0a68f336c7ce",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "EMAIL READY",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "9b7db35e-a4d4-494b-858c-b379ac144b4d",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "FINAL EMAIL",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -784,
+        192
+      ],
+      "id": "5b525210-9680-4b2d-838b-dcc5f4be6923",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1408,
+        288
+      ],
+      "id": "535272a5-5b12-45af-9dd6-da0c01b8d55b",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "HkDlSEqDdZzWzuDm",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "17XbAi4tQ46Ld24QkM3_j0MIYN0BuR1XNTNT-28MXAYo",
+          "mode": "list",
+          "cachedResultName": "E-contact_analyzed_companies",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/17XbAi4tQ46Ld24QkM3_j0MIYN0BuR1XNTNT-28MXAYo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 62135283,
+          "mode": "list",
+          "cachedResultName": "E-contact_analyzed_companies",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/17XbAi4tQ46Ld24QkM3_j0MIYN0BuR1XNTNT-28MXAYo/edit#gid=62135283"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.6,
+      "position": [
+        -976,
+        384
+      ],
+      "id": "2760c9e0-79d5-415c-8855-49d807d0c217",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "UTBNFU0smrIPlIXM",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Slack Trigger').item.json.channel }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -1248,
+        432
+      ],
+      "id": "9952168a-2712-4708-9a30-b1d8986122d1",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "0ekDuQkszfPGGLaQ",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C096DT4JJ82",
+          "mode": "list",
+          "cachedResultName": "response-to-flow"
+        },
+        "text": "Email Sent !!",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        112,
+        128
+      ],
+      "id": "4c53fdfe-b6ab-4f64-8328-1d2cf535d678",
+      "name": "Send a message2",
+      "webhookId": "738e42d9-913a-4ac8-a06d-8be3976188ca",
+      "credentials": {
+        "slackApi": {
+          "id": "l7nYFk3pQkRFlv0p",
+          "name": "BOT"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Slack Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message1": {
+      "main": [
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "de335a77-9216-4ea2-9e80-8cc03f815c8a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b25920fd2f98186f983cb4d163e4645330a85c8dfa10e7430dc65968099b7424"
+  },
+  "id": "llKNp4l0SWhP6Lt5",
+  "tags": []
+}
